@@ -28,8 +28,10 @@ defmodule RemainderWeb.AuthController do
   def login(conn, %{"email" => email, "password" => password}) do
     case authenticate_user(email, password) do
       {:ok, user} ->
-        {:ok, token, _} = Guardian.encode_and_sign(user)
-        render conn, "login.json", data: user, token: token
+        {:ok, token, _claims} = Guardian.encode_and_sign(user)
+
+        conn
+        |> render("login.json", data: user, token: token)
       {:error, :invalid_credentials} ->
         render conn,
                "error.json",
@@ -40,7 +42,8 @@ defmodule RemainderWeb.AuthController do
   end
 
   def authenticate_user(email, plain_text_password) do
-    case User |> Repo.get_by(email: email) do
+    case User
+         |> Repo.get_by(email: email) do
       nil ->
         Bcrypt.dummy_checkpw()
         {:error, :invalid_credentials}

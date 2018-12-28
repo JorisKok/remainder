@@ -15,8 +15,10 @@ defmodule RemainderWeb.AuthControllerLoginTest do
 
     %{"token" => token} = post(conn, "/v1/auth/login", params) |> json_data
 
-    # TODO finish this
-    assert_value get(conn, "/v1/secret-chocolate-bar") |> json_data
+    assert_value conn
+                 |> put_req_header("authorization", "Bearer: #{token}")
+                 |> get("/v1/secret-chocolate-bar")
+                 |> json_data == %{"message" => "You found it!"}
   end
 
   # TODO if email is wrong

@@ -17,5 +17,3 @@ config :remainder, Remainder.Repo,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
-# BCrypt speed for tests
-config :bcrypt_elixir, :log_rounds, 4
