@@ -5,7 +5,7 @@ defmodule RemainderWeb.AuthControllerLoginTest do
   import RemainderWeb.TestHelper
 
   setup do
-    UserFactory.create_user()
+    UserFactory.create
   end
 
   test "POST /v1/auth/login returns a token that we can use for authentication", %{conn: conn} do

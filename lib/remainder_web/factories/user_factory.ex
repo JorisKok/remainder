@@ -4,7 +4,7 @@ defmodule RemainderWeb.UserFactory do
   alias Comeonin.Bcrypt
   alias Remainder.Guardian
 
-  def create_user do
+  def create do
     {:ok, user} = Repo.insert %User{
       email: "admin@example.com",
       password: Bcrypt.hashpwsalt("secret"),

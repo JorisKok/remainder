@@ -1,7 +1,7 @@
 defmodule RemainderWeb.Router do
   use RemainderWeb, :router
 
-  pipeline :auth do
+  pipeline :user_auth do
     plug RemainderWeb.AuthUser
   end
 
@@ -17,8 +17,9 @@ defmodule RemainderWeb.Router do
   end
 
   scope "/v1", RemainderWeb do
-    pipe_through [:api, :auth]
+    pipe_through [:api, :user_auth]
 
     get "/secret-chocolate-bar", SecretChocolateBarController, :index
+    post "/employees", EmployeeController, :create
   end
 end

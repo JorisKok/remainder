@@ -1,27 +1,19 @@
 defmodule RemainderWeb.AuthController do
   use RemainderWeb, :controller
-  import Ecto.Query
   alias Remainder.{Repo, User}
   alias Comeonin.Bcrypt
   alias Remainder.Guardian
 
   def register(conn, params) do
     changeset = User.changeset(%User{}, params)
-    case changeset.valid? do
-      true ->
-        {:ok, user} = Repo.insert(
-          %User{
-            first_name: changeset.changes.first_name,
-            last_name: changeset.changes.last_name,
-            company_name: changeset.changes.company_name,
-            phone: changeset.changes.phone,
-            email: changeset.changes.email,
-            password: changeset.changes.password,
-          }
-        )
+    case Repo.insert(changeset) do
+      {:ok, user} ->
         render conn, "register.json", data: user
-      false ->
-        render conn, "error.json", data: changeset.errors
+      {:error, changeset} ->
+        conn
+        |> put_status(422)
+        |> put_view(RemainderWeb.ErrorView)
+        |> render("errors.json", data: changeset.errors)
     end
   end
 

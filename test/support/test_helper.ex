@@ -25,4 +25,15 @@ defmodule RemainderWeb.TestHelper do
       messages -> messages
     end
   end
+
+  @doc """
+  Assert against validation errors
+  """
+  def json_validation_error(conn) do
+    response = json_response(conn, 422)
+    case response["error"] do
+      nil -> response
+      messages -> messages
+    end
+  end
 end

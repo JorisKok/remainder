@@ -2,6 +2,12 @@ defmodule Remainder.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias Comeonin.Bcrypt
+  @moduledoc """
+  The user is the main account of a company
+  When a user has paid, it can create employees
+  Employees can also login and create resources
+  All resources are linked to a user
+  """
 
   # UUID's
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -24,6 +30,7 @@ defmodule Remainder.User do
     user
     |> cast(attrs, [:first_name, :last_name, :email, :password, :company_name, :phone])
     |> validate_required([:first_name, :last_name, :email, :password, :company_name, :phone])
+    |> unique_constraint(:email)
     |> put_password_hash
   end
 
