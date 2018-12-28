@@ -14,4 +14,15 @@ defmodule RemainderWeb.TestHelper do
       data -> Map.drop(data, ["id", "inserted_at", "updated_at"])
     end
   end
+
+  @doc """
+  Asserts against authentication errors
+  """
+  def json_auth_error(conn) do
+    response = json_response(conn, 401)
+    case response["error"]["messages"] do
+      nil -> response
+      messages -> messages
+    end
+  end
 end

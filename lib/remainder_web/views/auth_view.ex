@@ -33,7 +33,7 @@ defmodule RemainderWeb.AuthView do
   def render("error.json", %{data: data}) do
     %{
       "error" => %{
-        "data" => data
+        "messages" => data
       }
     }
   end

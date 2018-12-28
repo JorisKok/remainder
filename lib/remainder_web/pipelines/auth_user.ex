@@ -2,7 +2,7 @@ defmodule RemainderWeb.AuthUser do
   @moduledoc false
   use Guardian.Plug.Pipeline,
       otp_app: :remainder,
-      error_handler: Remainder.ErrorHandler,
+      error_handler: RemainderWeb.ErrorController,
       module: Remainder.Guardian
 
   plug(Guardian.Plug.VerifyHeader)
