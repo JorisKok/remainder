@@ -1,5 +1,5 @@
 defmodule Remainder.User do
-  use Ecto.Schema
+  use Remainder.Schema
   import Ecto.Changeset
   alias Comeonin.Bcrypt
   import RemainderWeb.EmailUniqueValidator
@@ -9,10 +9,6 @@ defmodule Remainder.User do
   Employees can also login and create resources
   All resources are linked to a user
   """
-
-  # UUID's
-  @primary_key {:id, :binary_id, autogenerate: true}
-  @derive {Phoenix.Param, key: :id}
 
   schema "users" do
     field :first_name, :string

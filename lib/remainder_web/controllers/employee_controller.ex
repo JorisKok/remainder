@@ -4,7 +4,7 @@ defmodule RemainderWeb.EmployeeController do
   alias Remainder.{Repo, Employee}
 
   def create(conn, params) do
-    changeset = Employee.changeset(%Employee{}, params)
+    changeset = Employee.changeset(conn, %Employee{}, params)
     case Repo.insert(changeset) do
       {:ok, employee} -> render conn, "create.json", data: employee
       {:error, changeset} ->
