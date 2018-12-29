@@ -36,4 +36,11 @@ defmodule RemainderWeb.TestHelper do
       messages -> messages
     end
   end
+
+  @doc """
+  Assert against no response
+  """
+  def json_no_response(conn) do
+    conn.status == 204
+  end
 end

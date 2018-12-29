@@ -20,6 +20,6 @@ defmodule RemainderWeb.Router do
     pipe_through [:api, :user_auth]
 
     get "/secret-chocolate-bar", SecretChocolateBarController, :index
-    post "/employees", EmployeeController, :create
+    resources "/employees", EmployeeController, only: [:index, :show, :update, :create, :delete]
   end
 end

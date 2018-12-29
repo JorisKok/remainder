@@ -14,6 +14,15 @@ defmodule RemainderWeb.ErrorView do
     Phoenix.Controller.status_message_from_template(template)
   end
 
+  def render("auth_error.json", %{}) do
+    %{
+      "error" => %{
+        "fields" => ["token"],
+        "messages" => ["Authorization required"]
+      }
+    }
+  end
+
   def render("errors.json", %{data: %{field: field, message: message}}) do
     %{
       "error" => %{
