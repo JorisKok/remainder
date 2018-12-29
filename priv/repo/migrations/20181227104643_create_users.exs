@@ -6,7 +6,7 @@ defmodule Remainder.Repo.Migrations.CreateUsers do
       add :id, :uuid, primary_key: true
       add :first_name, :string
       add :last_name, :string
-      add :email, :string # TODO unique and unique with employees?
+      add :email, :string
       add :password, :string
       add :company_name, :string
       add :phone, :string
