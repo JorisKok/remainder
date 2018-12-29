@@ -3,6 +3,7 @@ defmodule Remainder.User do
   import Ecto.Changeset
   alias Comeonin.Bcrypt
   import RemainderWeb.EmailUniqueValidator
+
   @moduledoc """
   The user is the main account of a company
   When a user has paid, it can create employees

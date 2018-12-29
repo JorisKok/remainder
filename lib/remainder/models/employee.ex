@@ -2,9 +2,8 @@ defmodule Remainder.Employee do
   use Remainder.Schema
   import Ecto.Changeset
   alias Comeonin.Bcrypt
-  alias Remainder.{Repo, User, Employee}
+  alias Remainder.User
   import RemainderWeb.EmailUniqueValidator
-  import Remainder.Guardian
 
   schema "employees" do
     field :email, :string
@@ -15,28 +14,6 @@ defmodule Remainder.Employee do
     belongs_to :user, User
 
     timestamps()
-  end
-
-  @doc """
-  Deletes an employee that belongs to the logged in user
-  """
-  def delete(conn, id) do
-    employee = Employee
-               |> Repo.get!(id)
-
-    case employee.user_id == me(conn).id do
-      true -> Repo.delete(employee)
-      false -> {:error, :unauthorized}
-    end
-  end
-
-  @doc """
-  Creates an employee that belongs to the logged in user
-  """
-  def create(conn, params) do
-    attrs = Map.put(params, "user_id", me(conn).id) # Add user_id to the params
-    changeset = Employee.changeset(%Employee{}, attrs)
-    Repo.insert(changeset)
   end
 
 

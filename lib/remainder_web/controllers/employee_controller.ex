@@ -1,10 +1,10 @@
 defmodule RemainderWeb.EmployeeController do
   @moduledoc false
   use RemainderWeb, :controller
-  alias Remainder.{Repo, Employee}
+  alias Remainder.{EmployeeRepo}
 
   def create(conn, params) do
-    case Employee.create(conn, params) do
+    case EmployeeRepo.create(conn, params) do
       {:ok, employee} -> render conn, "create.json", data: employee
       {:error, changeset} ->
         conn
@@ -15,7 +15,7 @@ defmodule RemainderWeb.EmployeeController do
   end
 
   def delete(conn, %{"id" => id}) do
-    case Employee.delete(conn, id)do
+    case EmployeeRepo.delete(conn, id)do
       {:ok, _employee} ->
         conn
         |> put_status(204)

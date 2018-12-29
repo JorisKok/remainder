@@ -1,12 +1,9 @@
 defmodule RemainderWeb.AuthController do
   use RemainderWeb, :controller
-  alias Remainder.{Repo, User, Employee}
-  alias Comeonin.Bcrypt
-  alias Remainder.Guardian
+  alias Remainder.{Guardian, UserRepo}
 
   def register(conn, params) do
-    changeset = User.changeset(%User{}, params)
-    case Repo.insert(changeset) do
+    case UserRepo.create(params) do
       {:ok, user} ->
         render conn, "register.json", data: user
       {:error, changeset} ->
@@ -18,7 +15,7 @@ defmodule RemainderWeb.AuthController do
   end
 
   def login(conn, %{"email" => email, "password" => password}) do
-    case authenticate(email, password) do
+    case UserRepo.authenticate(email, password) do
       {:ok, user} ->
         {:ok, token, _claims} = Guardian.encode_and_sign(user)
 
@@ -36,44 +33,4 @@ defmodule RemainderWeb.AuthController do
            )
     end
   end
-
-
-  defp authenticate(email, plain_text_password) do
-    case authenticate_user(email, plain_text_password) do
-      {:ok, user} -> {:ok, user}
-      {:error} ->
-        case authenticate_employee(email, plain_text_password) do
-          {:ok, employee} ->
-            {:ok, employee}
-          {:error} ->
-            Bcrypt.dummy_checkpw()
-            {:error}
-        end
-    end
-  end
-
-  defp authenticate_user(email, plain_text_password) do
-    case User
-         |> Repo.get_by(email: email) do
-      nil -> {:error}
-      user -> check_password(user, plain_text_password)
-    end
-  end
-
-  defp authenticate_employee(email, plain_text_password) do
-    case Employee
-         |> Repo.get_by(email: email) do
-      nil -> {:error}
-      employee -> check_password(employee, plain_text_password)
-    end
-  end
-
-  defp check_password(resource, plain_text_password) do
-    if Bcrypt.checkpw(plain_text_password, resource.password) do
-      {:ok, resource}
-    else
-      {:error}
-    end
-  end
-
 end
