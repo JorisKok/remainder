@@ -1,6 +1,6 @@
 defmodule Remainder.Guardian do
   use Guardian, otp_app: :remainder
-  alias Remainder.{Repo, User}
+  alias Remainder.{Repo, User, Employee}
 
   def subject_for_token(resource, _claims) do
     # You can use any value for the subject of your token but
@@ -17,8 +17,11 @@ defmodule Remainder.Guardian do
     # found in the `"sub"` key. In `above subject_for_token/2` we returned
     # the resource id so here we'll rely on that to look it up.
     id = claims["sub"]
-    resource = User |> Repo.get(id)
-    {:ok,  resource}
+    # Login as a user, or as an employee
+    case User |> Repo.get(id) do
+      nil -> {:ok, Employee |> Repo.get(id)}
+      user -> {:ok, user}
+    end
   end
 end
 

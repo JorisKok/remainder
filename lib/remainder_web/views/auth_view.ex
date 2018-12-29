@@ -1,6 +1,6 @@
 defmodule RemainderWeb.AuthView do
   use RemainderWeb, :view
-  alias Remainder.User
+  alias Remainder.{User, Employee}
 
   def render("register.json", %{data: %User{} = data}) do
     %{
@@ -20,7 +20,17 @@ defmodule RemainderWeb.AuthView do
     }
   end
 
-  def render("login.json", %{data: %User{} = data, token: token}) do
+  def render("login.json", %{data: %User{} = _data, token: token}) do
+    %{
+      "success" => %{
+        "data" => %{
+          "token" => token,
+        }
+      }
+    }
+  end
+
+  def render("login.json", %{data: %Employee{} = _data, token: token}) do
     %{
       "success" => %{
         "data" => %{

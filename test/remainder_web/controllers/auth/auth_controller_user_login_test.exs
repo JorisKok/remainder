@@ -1,4 +1,4 @@
-defmodule RemainderWeb.AuthControllerLoginTest do
+defmodule RemainderWeb.AuthControllerUserLoginTest do
   use RemainderWeb.ConnCase
   alias RemainderWeb.UserFactory
   import AssertValue

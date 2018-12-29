@@ -1,4 +1,4 @@
-defmodule RemainderWeb.AuthControllerRegisterTest do
+defmodule RemainderWeb.AuthControllerUserRegisterTest do
   use RemainderWeb.ConnCase
   import AssertValue
   import RemainderWeb.TestHelper

@@ -1,6 +1,6 @@
 defmodule RemainderWeb.AuthController do
   use RemainderWeb, :controller
-  alias Remainder.{Repo, User}
+  alias Remainder.{Repo, User, Employee}
   alias Comeonin.Bcrypt
   alias Remainder.Guardian
 
@@ -18,33 +18,62 @@ defmodule RemainderWeb.AuthController do
   end
 
   def login(conn, %{"email" => email, "password" => password}) do
-    case authenticate_user(email, password) do
+    case authenticate(email, password) do
       {:ok, user} ->
         {:ok, token, _claims} = Guardian.encode_and_sign(user)
 
         conn
         |> render("login.json", data: user, token: token)
-      {:error, :invalid_credentials} ->
-        render conn,
-               "error.json",
-               data: %{
-                 error: "invalid_credentials"
-               }
+      {:error} ->
+        conn
+        |> put_view(RemainderWeb.ErrorView)
+        |> render(
+             "errors.json",
+             data: %{
+               field: "token",
+               message: "Invalid Credentials"
+             }
+           )
     end
   end
 
-  def authenticate_user(email, plain_text_password) do
-    case User
-         |> Repo.get_by(email: email) do
-      nil ->
-        Bcrypt.dummy_checkpw()
-        {:error, :invalid_credentials}
-      user ->
-        if Bcrypt.checkpw(plain_text_password, user.password) do
-          {:ok, user}
-        else
-          {:error, :invalid_credentials}
+
+  defp authenticate(email, plain_text_password) do
+    case authenticate_user(email, plain_text_password) do
+      {:ok, user} -> {:ok, user}
+      {:error} ->
+        case authenticate_employee(email, plain_text_password) do
+          {:ok, employee} ->
+            {:ok, employee}
+          {:error} ->
+            Bcrypt.dummy_checkpw()
+            {:error}
         end
     end
   end
+
+  defp authenticate_user(email, plain_text_password) do
+    case User
+         |> Repo.get_by(email: email) do
+      nil -> {:error}
+      user -> check_password(user, plain_text_password)
+    end
+  end
+
+  defp authenticate_employee(email, plain_text_password) do
+    case Employee
+         |> Repo.get_by(email: email) do
+      nil -> {:error}
+      employee -> check_password(employee, plain_text_password)
+    end
+  end
+
+  defp check_password(resource, plain_text_password) do
+    if Bcrypt.checkpw(plain_text_password, resource.password) do
+      {:ok, resource}
+    else
+      {:error}
+    end
+  end
+
 end

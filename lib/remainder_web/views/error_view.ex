@@ -14,11 +14,20 @@ defmodule RemainderWeb.ErrorView do
     Phoenix.Controller.status_message_from_template(template)
   end
 
+  def render("errors.json", %{data: %{field: field, message: message}}) do
+    %{
+      "error" => %{
+        "fields" => [field],
+        "messages" => [message]
+      }
+    }
+  end
+
   def render("errors.json", %{data: data}) do
     %{
       "error" => %{
-        "fields" => Enum.map(data, fn {key, {_,_}} -> key end),
-        "messages" => Enum.map(data, fn {key, {message,_}} -> "#{key} #{message}" end),
+        "fields" => Enum.map(data, fn {key, {_, _}} -> key end),
+        "messages" => Enum.map(data, fn {key, {message, _}} -> "#{key} #{message}" end),
       }
     }
   end
