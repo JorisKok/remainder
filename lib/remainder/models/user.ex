@@ -2,6 +2,7 @@ defmodule Remainder.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias Comeonin.Bcrypt
+  import RemainderWeb.EmailUniqueValidator
   @moduledoc """
   The user is the main account of a company
   When a user has paid, it can create employees
@@ -31,6 +32,7 @@ defmodule Remainder.User do
     |> cast(attrs, [:first_name, :last_name, :email, :password, :company_name, :phone])
     |> validate_required([:first_name, :last_name, :email, :password, :company_name, :phone])
     |> unique_constraint(:email)
+    |> email_unique_employees
     |> put_password_hash
   end
 

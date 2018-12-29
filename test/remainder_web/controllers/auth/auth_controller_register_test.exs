@@ -2,7 +2,7 @@ defmodule RemainderWeb.AuthControllerRegisterTest do
   use RemainderWeb.ConnCase
   import AssertValue
   import RemainderWeb.TestHelper
-  alias RemainderWeb.UserFactory
+  alias RemainderWeb.{UserFactory, EmployeeFactory}
 
   test "POST /v1/auth/register", %{conn: conn} do
     params = %{
@@ -70,6 +70,22 @@ defmodule RemainderWeb.AuthControllerRegisterTest do
   end
 
   test "POST /v1/auth/register returns 422 if email is already taken by an employee", %{conn: conn} do
-    # TODO
+    {:ok, %{employee: employee}} = EmployeeFactory.create
+
+    params = %{
+      first_name: "Bob",
+      last_name: "Ross",
+      company_name: "register-company",
+      phone: "06123412345",
+      email: employee.email,
+      password: "secret",
+    }
+
+    assert_value conn
+                 |> post("/v1/auth/register", params)
+                 |> json_validation_error == %{
+                   "fields" => ["email"],
+                   "messages" => ["email already exists"]
+                 }
   end
 end

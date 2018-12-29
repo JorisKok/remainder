@@ -76,7 +76,20 @@ defmodule RemainderWeb.EmployeeControllerCreateTest do
                  }
   end
 
-  test "POST /v1/employee cant create an employee when email exists in users", %{conn: conn} do
-    # TODO
+  test "POST /v1/employee cant create an employee when email exists in users", %{conn: conn, user: user, token: token} do
+    params = %{
+      "first_name" => "Jane",
+      "last_name" => "Doe",
+      "email" => user.email,
+      "password" => "secret",
+    }
+
+    assert_value conn
+                 |> put_req_header("authorization", "Bearer: #{token}")
+                 |> post("/v1/employees", params)
+                 |> json_validation_error == %{
+                   "fields" => ["email"],
+                   "messages" => ["email already exists"]
+                 }
   end
 end

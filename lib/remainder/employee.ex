@@ -2,6 +2,7 @@ defmodule Remainder.Employee do
   use Ecto.Schema
   import Ecto.Changeset
   alias Comeonin.Bcrypt
+  import RemainderWeb.EmailUniqueValidator
 
   schema "employees" do
     field :email, :string
@@ -19,6 +20,7 @@ defmodule Remainder.Employee do
     |> cast(attrs, [:first_name, :last_name, :email, :password])
     |> validate_required([:first_name, :last_name, :email, :password])
     |> unique_constraint(:email)
+    |> email_unique_users
     |> put_password_hash
   end
 
