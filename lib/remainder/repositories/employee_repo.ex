@@ -13,6 +13,17 @@ defmodule Remainder.EmployeeRepo do
   end
 
   @doc """
+  Get the employee that belongs to the logged in user
+  """
+  def get(conn, id) do
+    employee = Employee |> Repo.get(id)
+    case employee.user_id == me(conn).id do
+      true -> employee
+      false -> nil
+    end
+  end
+
+  @doc """
   Deletes an employee that belongs to the logged in user
   """
   def delete(conn, id) do

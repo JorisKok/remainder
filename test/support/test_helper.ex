@@ -44,6 +44,17 @@ defmodule RemainderWeb.TestHelper do
     response = json_response(conn, 422)
     case response["error"] do
       nil -> response
+      errors -> errors
+    end
+  end
+
+  @doc """
+  Assert against a 404 not found
+  """
+  def json_not_found(conn) do
+    response = json_response(conn, 404)
+    case response["error"]["messages"] do
+      nil -> response
       messages -> messages
     end
   end

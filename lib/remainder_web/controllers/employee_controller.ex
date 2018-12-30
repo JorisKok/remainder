@@ -7,6 +7,25 @@ defmodule RemainderWeb.EmployeeController do
     render conn, "index.json", data: EmployeeRepo.all(conn)
   end
 
+  def show(conn, %{"id" => id}) do
+    case EmployeeRepo.get(conn, id) do
+      nil ->
+        conn
+        |> put_status(404)
+        |> put_view(RemainderWeb.ErrorView)
+        |> render(
+             "errors.json",
+             data: %{
+               field: "id",
+               message: "Not found"
+             }
+           )
+      employee ->
+        render conn, "show.json", data: employee
+    end
+
+  end
+
   def create(conn, params) do
     case EmployeeRepo.create(conn, params) do
       {:ok, employee} -> render conn, "create.json", data: employee

@@ -17,7 +17,7 @@ defmodule RemainderWeb.EmployeeFactory do
   end
 
   def create(params) do
-    create_employee Map.merge(employee(), params, fn _key, value1, _value2 -> value1 end)
+    create_employee Map.merge(params, employee(), fn _key, value1, _value2 -> value1 end)
   end
 
   defp create_employee(params) do
