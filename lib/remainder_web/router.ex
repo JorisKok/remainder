@@ -21,5 +21,6 @@ defmodule RemainderWeb.Router do
 
     get "/secret-chocolate-bar", SecretChocolateBarController, :index
     resources "/employees", EmployeeController, only: [:index, :show, :update, :create, :delete]
+    resources "/projects", ProjectController, only: [:index, :show, :update, :create, :delete]
   end
 end

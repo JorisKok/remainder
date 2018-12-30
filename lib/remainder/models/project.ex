@@ -1,0 +1,23 @@
+defmodule Remainder.Project do
+  use Remainder.Schema
+  import Ecto.Changeset
+
+  schema "projects" do
+    field :name, :string
+
+    belongs_to :user, User
+
+    timestamps()
+  end
+
+  @doc false
+  def changeset(project, attrs) do
+    project
+    |> cast(attrs, [:name, :user_id])
+    |> validate_required([:name, :user_id])
+    |> cast_assoc(:user)
+    |> assoc_constraint(:user)
+
+    # TODO unique contraint over email/user_id
+  end
+end
