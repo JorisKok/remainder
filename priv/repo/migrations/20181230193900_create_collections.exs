@@ -7,7 +7,6 @@ defmodule Remainder.Repo.Migrations.CreateCollections do
       add :name, :string
       add :introduction, :text
       add :project_id, references(:projects, on_delete: :nothing, type: :uuid)
-      add :user_id, references(:users, on_delete: :nothing, type: :uuid)
 
       timestamps()
     end

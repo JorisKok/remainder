@@ -53,6 +53,9 @@ defmodule Remainder.ProjectRepo do
     Repo.insert(changeset)
   end
 
+  @doc """
+  Get the project that belongs to the logged in user
+  """
   def get_by_email(email) do
     Project
     |> Repo.get_by(email: email)

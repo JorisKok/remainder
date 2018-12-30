@@ -20,7 +20,7 @@ defmodule RemainderWeb.CollectionController do
   end
 
   def create(conn, params) do
-    case CollectionRepo.create(conn, params) do
+    case CollectionRepo.create(params) do
       {:ok, collection} -> render conn, "success.json", data: collection
       {:error, changeset} ->
         conn
