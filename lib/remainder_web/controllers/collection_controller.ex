@@ -1,27 +1,27 @@
-defmodule RemainderWeb.ProjectController do
+defmodule RemainderWeb.CollectionController do
   @moduledoc false
   use RemainderWeb, :controller
-  alias Remainder.{ProjectRepo}
+  alias Remainder.{CollectionRepo}
 
   def index(conn, _) do
-    render conn, "success.json", data: ProjectRepo.all(conn)
+    render conn, "success.json", data: CollectionRepo.all(conn)
   end
 
   def show(conn, %{"id" => id}) do
-    case ProjectRepo.get(conn, id) do
+    case CollectionRepo.get(conn, id) do
       nil ->
         conn
         |> put_status(404)
         |> put_view(RemainderWeb.ErrorView)
         |> render("404.json")
-      project ->
-        render conn, "success.json", data: project
+      collection ->
+        render conn, "success.json", data: collection
     end
   end
 
   def create(conn, params) do
-    case ProjectRepo.create(conn, params) do
-      {:ok, project} -> render conn, "success.json", data: project
+    case CollectionRepo.create(conn, params) do
+      {:ok, collection} -> render conn, "success.json", data: collection
       {:error, changeset} ->
         conn
         |> put_status(422)
@@ -31,8 +31,8 @@ defmodule RemainderWeb.ProjectController do
   end
 
   def update(conn, params) do
-    case ProjectRepo.update(conn, params) do
-      {:ok, project} -> render conn, "success.json", data: project
+    case CollectionRepo.update(conn, params) do
+      {:ok, collection} -> render conn, "success.json", data: collection
       {:error, changeset} ->
         conn
         |> put_status(422)
@@ -47,7 +47,7 @@ defmodule RemainderWeb.ProjectController do
   end
 
   def delete(conn, %{"id" => id}) do
-    case ProjectRepo.delete(conn, id) do
+    case CollectionRepo.delete(conn, id) do
       {1, _} ->
         conn
         |> put_status(204)

@@ -1,16 +1,14 @@
 defmodule RemainderWeb.ProjectControllerDeleteTest do
   use RemainderWeb.ConnCase
-  alias RemainderWeb.{UserFactory, ProjectFactory}
+  alias RemainderWeb.{ProjectFactory}
   import AssertValue
   import RemainderWeb.TestHelper
 
   setup do
-    UserFactory.create
+    ProjectFactory.create
   end
 
-  test "DELETE /v1/project/:id", %{conn: conn, user: user, token: token} do
-    {:ok, %{project: project}} = ProjectFactory.create(%{user_id: user.id})
-
+  test "DELETE /v1/project/:id", %{conn: conn, project: project, token: token} do
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")
                  |> delete("/v1/projects/#{project.id}")
@@ -23,7 +21,7 @@ defmodule RemainderWeb.ProjectControllerDeleteTest do
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")
                  |> delete("/v1/projects/#{project.id}")
-                 |> json_auth_error == ["Authorization required"]
+                 |> json_not_found == ["Not found"]
   end
 
 end

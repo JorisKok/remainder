@@ -5,6 +5,10 @@ defmodule RemainderWeb.Router do
     plug RemainderWeb.AuthUser
   end
 
+  pipeline :belongs_to_project do
+    plug RemainderWeb.ProjectPipeline
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -22,5 +26,10 @@ defmodule RemainderWeb.Router do
     get "/secret-chocolate-bar", SecretChocolateBarController, :index
     resources "/employees", EmployeeController, only: [:index, :show, :update, :create, :delete]
     resources "/projects", ProjectController, only: [:index, :show, :update, :create, :delete]
+
+    scope "/projects/:project_id" do
+      pipe_through [:belongs_to_project]
+      resources "/collections", CollectionController, only: [:index, :show, :update, :create, :delete]
+    end
   end
 end

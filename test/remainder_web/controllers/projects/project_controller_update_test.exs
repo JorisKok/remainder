@@ -5,15 +5,14 @@ defmodule RemainderWeb.ProjectControllerUpdateTest do
   import RemainderWeb.TestHelper
 
   setup do
-    UserFactory.create
+    ProjectFactory.create
   end
 
-  test "PATCH /v1/projects/:id", %{conn: conn, user: user, token: token} do
-    {:ok, %{project: project}} = ProjectFactory.create(%{user_id: user.id})
-
+  test "PATCH /v1/projects/:id", %{conn: conn, project: project, token: token} do
     params = %{
       "name" => "Bob Ross Paint Project X",
     }
+
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")
                  |> patch("/v1/projects/#{project.id}", params)

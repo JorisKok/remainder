@@ -5,7 +5,7 @@ defmodule RemainderWeb.ProjectControllerCreateTest do
   import RemainderWeb.TestHelper
 
   setup do
-    UserFactory.create
+    ProjectFactory.create
   end
 
   test "POST /v1/projects", %{conn: conn, token: token} do
@@ -44,9 +44,7 @@ defmodule RemainderWeb.ProjectControllerCreateTest do
   end
 
 
-  test "POST /v1/projects returns 422 when name + user_id is already taken", %{conn: conn, user: user, token: token} do
-    {:ok, %{project: project}} = ProjectFactory.create(%{user_id: user.id})
-
+  test "POST /v1/projects returns 422 when name + user_id is already taken", %{conn: conn, project: project, token: token} do
     params = %{
       "name" => project.name
     }

@@ -5,21 +5,15 @@ defmodule RemainderWeb.ProjectControllerShowTest do
   import RemainderWeb.TestHelper
 
   setup do
-    UserFactory.create
+    ProjectFactory.create
   end
 
-  test "GET /v1/projects/:id", %{conn: conn, user: user, token: token} do
-    {:ok, %{project: project}} = ProjectFactory.create(
-      %{
-        name: "Ukuku",
-        user_id: user.id
-      }
-    )
+  test "GET /v1/projects/:id", %{conn: conn, project: project, token: token} do
 
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")
                  |> get("/v1/projects/#{project.id}")
-                 |> json_data == %{"name" => "Ukuku"}
+                 |> json_data == %{"name" => project.name}
   end
 
   test "GET /v1/projects/:id get 404 when project is not found", %{conn: conn, token: token} do

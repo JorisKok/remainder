@@ -5,11 +5,10 @@ defmodule RemainderWeb.ProjectControllerListTest do
   import RemainderWeb.TestHelper
 
   setup do
-    UserFactory.create
+    ProjectFactory.create
   end
 
   test "GET /v1/projects", %{conn: conn, user: user, token: token} do
-    ProjectFactory.create(%{user_id: user.id})
     ProjectFactory.create(%{user_id: user.id})
 
     assert_value conn
@@ -18,9 +17,8 @@ defmodule RemainderWeb.ProjectControllerListTest do
                  |> json_count == 2
   end
 
-  test "GET /v1/projects only returns logged in user's projects", %{conn: conn, user: user, token: token} do
+  test "GET /v1/projects only returns logged in user's projects", %{conn: conn, token: token} do
     {:ok, %{user: other_user}} = UserFactory.create
-    ProjectFactory.create(%{user_id: user.id})
     ProjectFactory.create(%{user_id: other_user.id})
 
     assert_value conn
