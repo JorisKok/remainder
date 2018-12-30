@@ -1,19 +1,23 @@
 defmodule Remainder.EmployeeRepo do
   alias Remainder.{Repo, Employee}
   import Remainder.Guardian
+  import Ecto.Query, only: [from: 2]
   @moduledoc false
+
+  @doc """
+  Get all the employees that belong to the logged in user
+  """
+  def all(conn) do
+    user_id = me(conn).id
+    Repo.all(from e in Employee, where: e.user_id == ^user_id)
+  end
 
   @doc """
   Deletes an employee that belongs to the logged in user
   """
   def delete(conn, id) do
-    employee = Employee
-               |> Repo.get!(id)
-
-    case employee.user_id == me(conn).id do
-      true -> Repo.delete(employee)
-      false -> {:error, :unauthorized}
-    end
+    user_id = me(conn).id
+    Repo.delete_all(from e in Employee, where: e.user_id == ^user_id, where: e.id == ^id)
   end
 
   @doc """

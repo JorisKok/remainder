@@ -8,7 +8,7 @@ defmodule RemainderWeb.EmployeeControllerDeleteTest do
     UserFactory.create
   end
 
-  test "DELETE /v1/employee", %{conn: conn, user: user, token: token} do
+  test "DELETE /v1/employee/:id", %{conn: conn, user: user, token: token} do
     {:ok, %{employee: employee}} = EmployeeFactory.create(%{user_id: user.id})
 
     assert_value conn
@@ -17,7 +17,7 @@ defmodule RemainderWeb.EmployeeControllerDeleteTest do
                  |> json_no_response == true
   end
 
-  test "DELETE /v1/employee cannot delete an employee of a different user", %{conn: conn, token: token} do
+  test "DELETE /v1/employee/:id cannot delete an employee of a different user", %{conn: conn, token: token} do
     {:ok, %{employee: employee}} = EmployeeFactory.create
 
     assert_value conn

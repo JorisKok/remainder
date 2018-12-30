@@ -20,7 +20,7 @@ defmodule Remainder.MixProject do
   def application do
     [
       mod: {Remainder.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :faker_elixir_octopus]
     ]
   end
 
@@ -39,14 +39,15 @@ defmodule Remainder.MixProject do
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:assert_value, ">= 0.0.0", only: [:dev, :test]},
       {:guardian, "~> 1.0"},
       {:comeonin, "~> 4.1"},
-      {:bcrypt_elixir, "~> 1.1"}
+      {:bcrypt_elixir, "~> 1.1"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:assert_value, ">= 0.0.0", only: [:dev, :test]},
+      {:faker_elixir_octopus, "~> 1.0.0",  only: [:dev, :test]},
     ]
   end
 

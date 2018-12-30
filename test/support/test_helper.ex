@@ -11,7 +11,18 @@ defmodule RemainderWeb.TestHelper do
     response = json_response(conn, 200)
     case response["success"]["data"] do
       nil -> response
-      data -> Map.drop(data, ["id", "inserted_at", "updated_at"])
+      data when is_map(data) -> Map.drop(data, ["id", "inserted_at", "updated_at"])
+    end
+  end
+
+  @doc """
+  Assert against a data count
+  """
+  def json_count(conn) do
+    response = json_response(conn, 200)
+    case response["success"]["data"] do
+      nil -> response
+      data when is_list(data) -> length(data)
     end
   end
 

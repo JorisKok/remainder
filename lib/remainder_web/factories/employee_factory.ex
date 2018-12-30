@@ -3,22 +3,26 @@ defmodule RemainderWeb.EmployeeFactory do
   alias Remainder.{Repo, Employee}
   alias Comeonin.Bcrypt
   alias Remainder.Guardian
+  alias FakerElixir, as: Faker
 
-  @employee %{
-    email: "employee@example.com",
-    password: Bcrypt.hashpwsalt("secret"),
-  }
+  defp employee do
+    %{
+      email: Faker.Internet.email,
+      password: Bcrypt.hashpwsalt("secret"),
+    }
+  end
 
   def create do
-    create_employee @employee
+    create_employee employee()
   end
 
   def create(params) do
-    create_employee Map.merge(@employee, params, fn _key, value1, _value2 -> value1 end)
+    create_employee Map.merge(employee(), params, fn _key, value1, _value2 -> value1 end)
   end
 
   defp create_employee(params) do
     {:ok, employee} = Repo.insert(struct(Employee, params))
+
     {:ok, token, claims} = Guardian.encode_and_sign(employee)
 
     {:ok, %{employee: employee, token: token, claims: claims}}

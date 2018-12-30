@@ -2,16 +2,37 @@ defmodule RemainderWeb.EmployeeView do
   use RemainderWeb, :view
   alias Remainder.Employee
 
-  def render("create.json", %{data: %Employee{} = data}) do
+  def render("index.json", %{data: employees}) do
+    %{
+      "success" => %{
+        "data" =>
+          Enum.map(
+            employees,
+            fn employee ->
+              %{
+                "id" => employee.id,
+                "first_name" => employee.first_name,
+                "last_name" => employee.last_name,
+                "email" => employee.email,
+                "inserted_at" => employee.inserted_at,
+                "updated_at" => employee.updated_at,
+              }
+            end
+          )
+      }
+    }
+  end
+
+  def render("create.json", %{data: %Employee{} = employee}) do
     %{
       "success" => %{
         "data" => %{
-          "id" => data.id,
-          "first_name" => data.first_name,
-          "last_name" => data.last_name,
-          "email" => data.email,
-          "inserted_at" => data.inserted_at,
-          "updated_at" => data.updated_at,
+          "id" => employee.id,
+          "first_name" => employee.first_name,
+          "last_name" => employee.last_name,
+          "email" => employee.email,
+          "inserted_at" => employee.inserted_at,
+          "updated_at" => employee.updated_at,
         }
       }
     }

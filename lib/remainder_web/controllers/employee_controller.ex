@@ -3,6 +3,10 @@ defmodule RemainderWeb.EmployeeController do
   use RemainderWeb, :controller
   alias Remainder.{EmployeeRepo}
 
+  def index(conn, _) do
+    render conn, "index.json", data: EmployeeRepo.all(conn)
+  end
+
   def create(conn, params) do
     case EmployeeRepo.create(conn, params) do
       {:ok, employee} -> render conn, "create.json", data: employee
@@ -15,11 +19,11 @@ defmodule RemainderWeb.EmployeeController do
   end
 
   def delete(conn, %{"id" => id}) do
-    case EmployeeRepo.delete(conn, id)do
-      {:ok, _employee} ->
+    case EmployeeRepo.delete(conn, id) do
+      {1, _} ->
         conn
         |> put_status(204)
-      {:error, :unauthorized} ->
+      {0, _} ->
         conn
         |> put_status(401)
         |> put_view(RemainderWeb.ErrorView)

@@ -8,9 +8,9 @@ defmodule RemainderWeb.AuthControllerEmployeeLoginTest do
     EmployeeFactory.create
   end
 
-  test "POST /v1/auth/login returns a token that we can use for authentication", %{conn: conn} do
+  test "POST /v1/auth/login returns a token that we can use for authentication", %{conn: conn, employee: employee} do
     params = %{
-      email: "employee@example.com",
+      email: employee.email,
       password: "secret",
     }
 
