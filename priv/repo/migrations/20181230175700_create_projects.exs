@@ -10,6 +10,6 @@ defmodule Remainder.Repo.Migrations.CreateProjects do
       timestamps()
     end
 
-#    create unique_index(:employees, [:name, :user_id])
+    create unique_index(:projects, [:name, :user_id])
   end
 end
