@@ -14,6 +14,15 @@ defmodule RemainderWeb.ErrorView do
     Phoenix.Controller.status_message_from_template(template)
   end
 
+  def render("404.json", %{}) do
+    %{
+      "error" => %{
+        "fields" => ["id"],
+        "messages" => ["Not found"]
+      }
+    }
+  end
+
   def render("auth_error.json", %{}) do
     %{
       "error" => %{

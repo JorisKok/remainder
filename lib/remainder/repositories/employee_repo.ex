@@ -16,10 +16,23 @@ defmodule Remainder.EmployeeRepo do
   Get the employee that belongs to the logged in user
   """
   def get(conn, id) do
-    employee = Employee |> Repo.get(id)
+    employee = Employee
+               |> Repo.get(id)
     case employee.user_id == me(conn).id do
       true -> employee
       false -> nil
+    end
+  end
+
+  @doc """
+  Updates an employee that belongs to the logged in user
+  """
+  def update(conn, params) do
+    case get(conn, params["id"]) do
+      nil -> nil
+      employee ->
+        Employee.changeset(employee, params)
+        |> Repo.update
     end
   end
 
@@ -41,6 +54,7 @@ defmodule Remainder.EmployeeRepo do
   end
 
   def get_by_email(email) do
-    Employee |> Repo.get_by(email: email)
+    Employee
+    |> Repo.get_by(email: email)
   end
 end

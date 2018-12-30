@@ -13,27 +13,19 @@ defmodule RemainderWeb.EmployeeView do
     }
   end
 
-  def render("index.json", %{data: employees}) do
+  def render("success.json", %{data: %Employee{} = employee}) do
+    %{
+      "success" => %{
+        "data" => transform(employee)
+      }
+    }
+  end
+
+  def render("success.json", %{data: employees}) do
     %{
       "success" => %{
         "data" =>
           Enum.map(employees, fn employee -> transform(employee) end)
-      }
-    }
-  end
-
-  def render("show.json", %{data: %Employee{} = employee}) do
-    %{
-      "success" => %{
-        "data" => transform(employee)
-      }
-    }
-  end
-
-  def render("create.json", %{data: %Employee{} = employee}) do
-    %{
-      "success" => %{
-        "data" => transform(employee)
       }
     }
   end
