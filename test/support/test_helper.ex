@@ -63,6 +63,9 @@ defmodule RemainderWeb.TestHelper do
   Assert against no response
   """
   def json_no_response(conn) do
-    conn.status == 204
+    case conn.status == 204 do
+      true -> true
+      false -> conn.resp_body
+    end
   end
 end

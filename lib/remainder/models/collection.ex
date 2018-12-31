@@ -15,7 +15,7 @@ defmodule Remainder.Collection do
   @doc false
   def changeset(collection, attrs) do
     collection
-    |> cast(attrs, [:name, :project_id])
+    |> cast(attrs, [:name, :project_id, :introduction])
     |> validate_required([:name, :project_id])
     |> unique_constraint(:name, name: :collections_name_project_id_index)
     |> cast_assoc(:project)

@@ -11,12 +11,16 @@ defmodule RemainderWeb.CollectionControllerCreateTest do
   test "POST /v1/projects/:project_id/collections", %{conn: conn, project: project, token: token} do
     params = %{
       "name" => "Collection X",
+      "introduction" => "Some introduction"
     }
 
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")
                  |> post("/v1/projects/#{project.id}/collections", params)
-                 |> json_data == %{"name" => "Collection X"}
+                 |> json_data == %{
+                   "introduction" => "Some introduction",
+                   "name" => "Collection X"
+                 }
   end
 
   test "POST /v1/projects/:project_id/collections returns 401 without token", %{conn: conn, project: project} do
@@ -61,8 +65,8 @@ defmodule RemainderWeb.CollectionControllerCreateTest do
   end
 
   test "POST /v1/collections returns 422 when name + project_id is already taken",
-       %{conn: conn, project: project, token: token} do
-    {:ok, %{collection: collection}} = CollectionFactory.create(%{project_id: project.id})
+       %{conn: conn, user: user, project: project, token: token} do
+    {:ok, %{collection: collection}} = CollectionFactory.create(%{user_id: user.id, project_id: project.id})
 
     params = %{
       "name" => collection.name
@@ -78,9 +82,8 @@ defmodule RemainderWeb.CollectionControllerCreateTest do
   end
 
   test "POST /v1/collections can create collection if name is unique for the project, but taken for another",
-       %{conn: conn, project: project, token: token} do
-    {:ok, %{project: another_project}} = ProjectFactory.create
-    {:ok, %{collection: collection}} = CollectionFactory.create(%{project_id: another_project.id})
+       %{conn: conn, user: user, project: project, token: token} do
+    {:ok, %{collection: collection}} = CollectionFactory.create(%{user_id: user.id, name: "Collection X"})
 
     params = %{
       "name" => collection.name
@@ -89,6 +92,6 @@ defmodule RemainderWeb.CollectionControllerCreateTest do
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")
                  |> post("/v1/projects/#{project.id}/collections", params)
-                 |> json_data == %{"name" => collection.name}
+                 |> json_data == %{"introduction" => nil, "name" => "Collection X"}
   end
 end

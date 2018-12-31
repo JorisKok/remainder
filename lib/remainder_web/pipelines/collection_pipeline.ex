@@ -1,9 +1,9 @@
-defmodule RemainderWeb.ProjectPipeline do
+defmodule RemainderWeb.CollectionPipeline do
   @moduledoc """
-  This pipeline makes sure that the project belongs to the logged in user
+  This pipeline makes sure that the collection belongs to the logged in user
   """
-  alias Remainder.ProjectRepo
-  alias Remainder.Project
+  alias Remainder.CollectionRepo
+  alias Remainder.Collection
   use RemainderWeb, :controller
 
   def init(_) do
@@ -12,8 +12,8 @@ defmodule RemainderWeb.ProjectPipeline do
 
   def call(conn, _) do
     # TODO cache this for speed
-    case ProjectRepo.get(conn, conn.params["project_id"]) do
-      %Project{} = _project -> conn
+    case CollectionRepo.get(conn, conn.params["collection_id"]) do
+      %Collection{} = _collection -> conn
       _ ->
         conn
         |> put_status(404)

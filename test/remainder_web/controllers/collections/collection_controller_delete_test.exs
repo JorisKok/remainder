@@ -1,6 +1,6 @@
 defmodule RemainderWeb.CollectionControllerDeleteTest do
   use RemainderWeb.ConnCase
-  alias RemainderWeb.{CollectionFactory}
+  alias RemainderWeb.CollectionFactory
   import AssertValue
   import RemainderWeb.TestHelper
 

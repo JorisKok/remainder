@@ -1,6 +1,6 @@
 defmodule RemainderWeb.CollectionControllerListTest do
   use RemainderWeb.ConnCase
-  alias RemainderWeb.{UserFactory, CollectionFactory}
+  alias RemainderWeb.CollectionFactory
   import AssertValue
   import RemainderWeb.TestHelper
 
@@ -27,8 +27,7 @@ defmodule RemainderWeb.CollectionControllerListTest do
   end
 
   test "GET /v1/projects/:project_id/collections only returns logged in user's collections", %{conn: conn, project: project, token: token} do
-    {:ok, %{user: other_user}} = UserFactory.create
-    CollectionFactory.create(%{user_id: other_user.id})
+    CollectionFactory.create
 
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")

@@ -6,6 +6,7 @@ defmodule RemainderWeb.CollectionView do
     %{
       "id" => collection.id,
       "name" => collection.name,
+      "introduction" => collection.introduction,
       "inserted_at" => collection.inserted_at,
       "updated_at" => collection.updated_at,
     }

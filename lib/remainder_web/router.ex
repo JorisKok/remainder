@@ -9,6 +9,10 @@ defmodule RemainderWeb.Router do
     plug RemainderWeb.ProjectPipeline
   end
 
+  pipeline :belongs_to_collection do
+    plug RemainderWeb.CollectionPipeline
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -30,6 +34,11 @@ defmodule RemainderWeb.Router do
     scope "/projects/:project_id" do
       pipe_through [:belongs_to_project]
       resources "/collections", CollectionController, only: [:index, :show, :update, :create, :delete]
+
+      scope "/collections/:collection_id" do
+        pipe_through [:belongs_to_collection]
+        resources "/resources", ResourceController, only: [:index, :show, :update, :create, :delete]
+      end
     end
   end
 end
