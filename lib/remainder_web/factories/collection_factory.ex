@@ -23,7 +23,7 @@ defmodule RemainderWeb.CollectionFactory do
 
     {:ok, %{project: project}} = create_optional_project(user, params)
 
-    {:ok, collection} = Repo.insert(struct(Collection, Map.merge(%{project_id: project.id, user_id: user.id}, params)))
+    {:ok, collection} = Repo.insert(struct(Collection, Map.merge(%{project_id: project.id}, params)))
 
     {:ok, %{user: user, token: token, claims: claims, project: project, collection: collection}}
   end

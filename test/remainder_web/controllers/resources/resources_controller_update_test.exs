@@ -31,18 +31,14 @@ defmodule RemainderWeb.ResourceControllerUpdateTest do
   test "PATCH /v1/projects/:project_id/collections/:collection_id/resources/:id gets 404 when the resource does not belong to the user", %{conn: conn, project: project, collection: collection, token: token} do
     {:ok, %{resource: resource}} = ResourceFactory.create()
 
-    params = %{
-      "email" => "Bob Ross Illegal Paint Resource",
-    }
-
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")
-                 |> patch("/v1/projects/#{project.id}/collections/#{collection.id}/resources/#{resource.id}", params)
+                 |> patch("/v1/projects/#{project.id}/collections/#{collection.id}/resources/#{resource.id}", %{})
                  |> json_not_found == ["Not found"]
   end
 
   test "PATCH /v1/projects/:project_id/collections/:collection_id/resources/:id gets 404 when the resource does not belong to the collection", %{conn: conn, project: project, collection: collection, user: user, token: token} do
-    {:ok, %{resource: resource}} = ResourceFactory.create(%{project: project.id, user_id: user.id})
+    {:ok, %{resource: resource}} = ResourceFactory.create(%{project_id: project.id, user_id: user.id})
 
     params = %{
       "email" => "Bob Ross Illegal Paint Resource",

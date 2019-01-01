@@ -51,12 +51,4 @@ defmodule Remainder.CollectionRepo do
     Collection.changeset(%Collection{}, params)
     |> Repo.insert()
   end
-
-  @doc """
-  Get the collection by email that belong to the project
-  """
-  def get_by_email(email) do
-    Collection
-    |> Repo.get_by(email: email)
-  end
 end

@@ -51,12 +51,4 @@ defmodule Remainder.ResourceRepo do
     Resource.changeset(%Resource{}, params)
     |> Repo.insert()
   end
-
-  @doc """
-  Get the resource by email that belong to the collection
-  """
-  def get_by_email(email) do
-    Resource
-    |> Repo.get_by(email: email)
-  end
 end

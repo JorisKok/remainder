@@ -1,6 +1,6 @@
 defmodule RemainderWeb.ProjectControllerUpdateTest do
   use RemainderWeb.ConnCase
-  alias RemainderWeb.{UserFactory, ProjectFactory}
+  alias RemainderWeb.ProjectFactory
   import AssertValue
   import RemainderWeb.TestHelper
 
@@ -20,15 +20,11 @@ defmodule RemainderWeb.ProjectControllerUpdateTest do
   end
 
   test "PATCH /v1/projects/:id gets 404 when the project does not belong to the user", %{conn: conn, token: token} do
-    {:ok, %{user: other_user}} = UserFactory.create
-    {:ok, %{project: project}} = ProjectFactory.create(%{user_id: other_user.id})
+    {:ok, %{project: project}} = ProjectFactory.create
 
-    params = %{
-      "email" => "Bob Ross Illegal Paint Project",
-    }
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")
-                 |> patch("/v1/projects/#{project.id}", params)
+                 |> patch("/v1/projects/#{project.id}", %{})
                  |> json_not_found == ["Not found"]
   end
 

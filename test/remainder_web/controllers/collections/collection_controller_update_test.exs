@@ -22,12 +22,9 @@ defmodule RemainderWeb.CollectionControllerUpdateTest do
   test "PATCH /v1/projects/:project_id/collections/:id gets 404 when the collection does not belong to the user", %{conn: conn, project: project, token: token} do
     {:ok, %{collection: collection}} = CollectionFactory.create
 
-    params = %{
-      "email" => "Bob Ross Illegal Paint Collection",
-    }
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")
-                 |> patch("/v1/projects/#{project.id}/collections/#{collection.id}", params)
+                 |> patch("/v1/projects/#{project.id}/collections/#{collection.id}", %{})
                  |> json_not_found == ["Not found"]
   end
 

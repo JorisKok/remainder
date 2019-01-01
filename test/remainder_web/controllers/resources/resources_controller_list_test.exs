@@ -26,7 +26,6 @@ defmodule RemainderWeb.ResourceControllerListTest do
                  |> json_count == 1
   end
 
-  @tag :current
   test "GET /v1/projects/:project_id/collections/:collection_id/resources only returns logged in user's resources", %{conn: conn, project: project, collection: collection, token: token} do
     ResourceFactory.create
 

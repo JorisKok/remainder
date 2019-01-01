@@ -30,14 +30,9 @@ defmodule RemainderWeb.EmployeeControllerUpdateTest do
     {:ok, %{user: other_user}} = UserFactory.create
     {:ok, %{employee: employee}} = EmployeeFactory.create(%{user_id: other_user.id})
 
-    params = %{
-      "email" => "bobby-rossy@example.com",
-      "first_name" => "Bobby",
-      "last_name" => "Rossy",
-    }
     assert_value conn
                  |> put_req_header("authorization", "Bearer: #{token}")
-                 |> patch("/v1/employees/#{employee.id}", params)
+                 |> patch("/v1/employees/#{employee.id}", %{})
                  |> json_not_found == ["Not found"]
   end
 
